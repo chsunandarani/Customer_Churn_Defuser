@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% set active_page = "analytics" %}
+{% block title %}Analytics - Churn Defuser{% endblock %}
+
+{% block extra_head %}
+<script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<h2 class="fw-bold mb-1" style="color: var(--dark-blue);">Analytics</h2>
+<p class="text-muted mb-4">Interactive insights into churn patterns and customer segments.</p>
+
+<div class="row g-4">
+  <div class="col-lg-6">
+    <div class="card-panel">
+      <div id="churnDistributionChart"></div>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="card-panel">
+      <div id="riskDistributionChart"></div>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="card-panel">
+      <div id="featureImportanceChart"></div>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="card-panel">
+      <div id="monthlyTrendsChart"></div>
+    </div>
+  </div>
+  <div class="col-12">
+    <div class="card-panel">
+      <div id="segmentationChart"></div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  {% if charts.churn_distribution %}
+  Plotly.newPlot("churnDistributionChart", JSON.parse('{{ charts.churn_distribution | safe }}').data, JSON.parse('{{ charts.churn_distribution | safe }}').layout, {responsive: true});
+  {% endif %}
+  {% if charts.risk_distribution %}
+  Plotly.newPlot("riskDistributionChart", JSON.parse('{{ charts.risk_distribution | safe }}').data, JSON.parse('{{ charts.risk_distribution | safe }}').layout, {responsive: true});
+  {% endif %}
+  {% if charts.feature_importance %}
+  Plotly.newPlot("featureImportanceChart", JSON.parse('{{ charts.feature_importance | safe }}').data, JSON.parse('{{ charts.feature_importance | safe }}').layout, {responsive: true});
+  {% endif %}
+  {% if charts.monthly_trends %}
+  Plotly.newPlot("monthlyTrendsChart", JSON.parse('{{ charts.monthly_trends | safe }}').data, JSON.parse('{{ charts.monthly_trends | safe }}').layout, {responsive: true});
+  {% endif %}
+  {% if charts.segmentation %}
+  Plotly.newPlot("segmentationChart", JSON.parse('{{ charts.segmentation | safe }}').data, JSON.parse('{{ charts.segmentation | safe }}').layout, {responsive: true});
+  {% endif %}
+</script>
+{% endblock %}

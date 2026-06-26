@@ -1,0 +1,52 @@
+{
+  "best_model": "LogisticRegression",
+  "all_results": {
+    "LogisticRegression": {
+      "accuracy": 0.8805,
+      "precision": 0.7822014051522248,
+      "recall": 0.6958333333333333,
+      "f1_score": 0.7364939360529217,
+      "roc_auc": 0.9340405701754386,
+      "best_params": {
+        "C": 0.1
+      }
+    },
+    "RandomForest": {
+      "accuracy": 0.87,
+      "precision": 0.8072625698324022,
+      "recall": 0.6020833333333333,
+      "f1_score": 0.6897374701670644,
+      "roc_auc": 0.9183580043859649,
+      "best_params": {
+        "max_depth": 10,
+        "n_estimators": 200
+      }
+    },
+    "GradientBoosting": {
+      "accuracy": 0.877,
+      "precision": 0.7853658536585366,
+      "recall": 0.6708333333333333,
+      "f1_score": 0.7235955056179775,
+      "roc_auc": 0.9261225328947368,
+      "best_params": {
+        "learning_rate": 0.05,
+        "max_depth": 3,
+        "n_estimators": 200
+      }
+    }
+  },
+  "feature_columns": [
+    "age",
+    "monthly_fee",
+    "subscription_months",
+    "login_frequency",
+    "session_duration",
+    "support_tickets",
+    "payment_failures",
+    "last_active_days",
+    "customer_satisfaction",
+    "feature_usage_score",
+    "referrals",
+    "engagement_score"
+  ]
+}

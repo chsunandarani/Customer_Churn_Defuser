@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% set active_page = "upload" %}
+{% block title %}Bulk Upload - Churn Defuser{% endblock %}
+
+{% block content %}
+<h2 class="fw-bold mb-1" style="color: var(--dark-blue);">Bulk CSV Upload</h2>
+<p class="text-muted mb-4">Upload a CSV file of customers to predict churn risk for all of them at once.</p>
+
+<div class="card-panel" style="max-width: 640px;">
+  <form method="POST" action="{{ url_for('upload') }}" enctype="multipart/form-data">
+    <div class="mb-3">
+      <label class="form-label">Customer CSV File</label>
+      <input type="file" class="form-control" name="file" accept=".csv" required>
+      <div class="form-text">
+        Required columns: age, monthly_fee, subscription_months, login_frequency,
+        session_duration, support_tickets, payment_failures, last_active_days,
+        customer_satisfaction, feature_usage_score, referrals, engagement_score
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary-custom" {% if not model_loaded %}disabled{% endif %}>
+      <i class="fa-solid fa-upload"></i> Upload &amp; Predict
+    </button>
+  </form>
+</div>
+{% endblock %}

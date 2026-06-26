@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% set active_page = "predict" %}
+{% block title %}Single Prediction - Churn Defuser{% endblock %}
+
+{% block content %}
+<h2 class="fw-bold mb-1" style="color: var(--dark-blue);">Single Customer Prediction</h2>
+<p class="text-muted mb-4">Enter customer details to predict churn risk and get retention recommendations.</p>
+
+<div class="row g-4">
+  <div class="col-lg-7">
+    <div class="card-panel">
+      <form method="POST" action="{{ url_for('predict') }}">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Age</label>
+            <input type="number" step="1" min="18" max="100" name="age" class="form-control" value="{{ result.inputs.age if result else 35 }}" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Monthly Fee ($)</label>
+            <input type="number" step="0.01" name="monthly_fee" class="form-control" value="{{ result.inputs.monthly_fee if result else 19.99 }}" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Subscription Months</label>
+            <input type="number" step="1" min="0" name="subscription_months" class="form-control" value="{{ result.inputs.subscription_months if result else 12 }}" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Login Frequency (per month)</label>
+            <input type="number" step="1" min="0" name="login_frequency" class="form-control" value="{{ result.inputs.login_frequency if result else 8 }}" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Session Duration (minutes)</label>
+            <input type="number" step="0.1" min="0" name="session_duration" class="form-control" value="{{ result.inputs.session_duration if result else 20 }}" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Support Tickets</label>
+            <input type="number" step="1" min="0" name="support_tickets" class="form-control" value="{{ result.inputs.support_tickets if result else 1 }}" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Payment Failures</label>
+            <input type="number" step="1" min="0" name="payment_failures" class="form-control" value="{{ result.inputs.payment_failures if result else 0 }}" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Last Active (days ago)</label>
+            <input type="number" step="1" min="0" name="last_active_days" class="form-control" value="{{ result.inputs.last_active_days if result else 5 }}" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Customer Satisfaction (1-10)</label>
+            <input type="number" step="0.1" min="1" max="10" name="customer_satisfaction" class="form-control" value="{{ result.inputs.customer_satisfaction if result else 7 }}" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Feature Usage Score (0-100)</label>
+            <input type="number" step="0.1" min="0" max="100" name="feature_usage_score" class="form-control" value="{{ result.inputs.feature_usage_score if result else 55 }}" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Referrals</label>
+            <input type="number" step="1" min="0" name="referrals" class="form-control" value="{{ result.inputs.referrals if result else 0 }}" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Engagement Score (0-100)</label>
+            <input type="number" step="0.1" min="0" max="100" name="engagement_score" class="form-control" value="{{ result.inputs.engagement_score if result else 40 }}" required>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary-custom mt-4 w-100" {% if not model_loaded %}disabled{% endif %}>
+          <i class="fa-solid fa-bolt"></i> Predict Churn
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="col-lg-5">
+    {% if result %}
+    <div class="card-panel text-center">
+      <h5 class="fw-bold mb-3">Prediction Result</h5>
+
+      <div class="mb-3">
+        <span class="badge fs-6 px-3 py-2
+          {% if result.risk_level == 'High Risk' %}badge-high
+          {% elif result.risk_level == 'Medium Risk' %}badge-medium
+          {% else %}badge-safe{% endif %}">
+          {{ result.risk_level }}
+        </span>
+      </div>
+
+      <div class="display-5 fw-bold mb-1" style="color: var(--dark-blue);">{{ result.risk_score }}%</div>
+      <p class="text-muted">Churn Risk Score</p>
+
+      <hr>
+
+      <h6 class="fw-bold text-start">Recommended Actions:</h6>
+      <ul class="text-start">
+        {% for rec in result.recommendations %}
+        <li>{{ rec }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% else %}
+    <div class="card-panel text-center text-muted">
+      <i class="fa-solid fa-chart-pie fa-2x mb-3"></i>
+      <p>Fill in the form and click "Predict Churn" to see results here.</p>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
