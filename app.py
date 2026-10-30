@@ -29,7 +29,7 @@ from flask import (
 # App configuration
 # ---------------------------------------------------------------------------
 app = Flask(__name__)
-app.secret_key = "churn-defuser-secret-key-change-in-production"
+app.secret_key = os.environ.get("SECRET_KEY", "dev-only-key")
 
 UPLOAD_FOLDER = "uploads"
 ALLOWED_EXTENSIONS = {"csv"}
